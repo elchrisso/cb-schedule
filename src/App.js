@@ -1,10 +1,58 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import moment from 'moment'
 
 class App extends Component {
+  constructor () {
+    super()
+    this.state = {
+      weekStart: moment('06-11-2017'),
+      weekEnd: moment('06-17-2017'),
+      tasks: [
+        {
+          objType: 'Task',
+          ID: '1',
+          name: 'Task One',
+          startDate: '06-11-2017',
+          endDate: '06-16-2017',
+          projectID: '1',
+          assignments: [ '1', '2' ]
+        },
+        {
+          objType: 'Task',
+          ID: '2',
+          name: 'Task Dos',
+          startDate: '06-13-2017',
+          endDate: '06-16-2017' ,
+          projectID: '2',
+          assignments: [ '3', '4' ],
+          complete: true,
+        },
+        {
+          objType: 'Task',
+          ID: '3',
+          name: 'Another Task',
+          startDate: '06-17-2017',
+          endDate: '06-17-2017',
+          projectID: '1' ,
+          assignments: [ '5' ]
+        }
+      ]
+    }
+  }
+
   render() {
+
+    const tasks = this.state.tasks.map((task) => {
+      const daySpan = moment(task.endDate).diff(moment(task.startDate), 'days') + 1
+      const offset = moment(task.startDate).diff(this.state.weekStart, 'days')
+      return (
+        <div key={task.ID} className={`col-${daySpan} offset-${offset} bg-primary`}>
+          {task.name}
+        </div>
+      )
+    })
+
     return (
       <div className="container">
         <header className="row">
@@ -37,6 +85,9 @@ class App extends Component {
             7
           </div>
         </header>
+        <section className="row">
+          {tasks}
+        </section>
       </div>
     );
   }
